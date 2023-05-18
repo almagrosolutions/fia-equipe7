@@ -17,7 +17,8 @@ datatran2022.csv (agurpado por ocorrencia)
 2 AIRFLOW LEITURA (RAW) VIA HIVE E GRAVAÇÃO NO POSTGRESQL (CONTEXT) </br>
 3 MINIO GERANDO PARQUET (CONTEXT) </br>
 4 POSTGRESQL (TRUST) </br>
-5 METABASE (DASHBOARD)
+5 METABASE (DASHBOARD) <br/>
+![plot](imagens/Projeto-V2.drawio.png)
 ## 4. IMAGEM DOCKER
 Em elaboração
 ## 5. SUBIR NO GIT
