@@ -1,0 +1,92 @@
+version: '3'
+
+networks:
+  stream-net:
+    driver: bridge
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    restart: always
+    hostname: zookeeper
+    container_name: zookeeper
+    networks:
+      - stream-net
+    environment:
+      - ZOOKEEPER_CLIENT_PORT=2181
+      - ZOOKEEPER_TICK_TIME=2000
+      - ALLOW_ANONYMOUS_LOGIN=yes
+
+  nifi:
+    image: apache/nifi:1.15.3
+    restart: always
+    hostname: nifi
+    container_name: nifi
+    ports:
+      - 8080:8080
+    environment:
+      - NIFI_WEB_HTTP_PORT=8080
+      - NIFI_CLUSTER_IS_NODE=false
+      - NIFI_CLUSTER_NODE_PROTOCOL_PORT=8082
+      - NIFI_ZK_CONNECT_STRING=zookeeper:2181
+      - NIFI_ELECTION_MAX_WAIT=1 min
+      #- NIFI_WEB_PROXY_HOST=191.234.129.222:8080
+    networks:
+      - stream-net
+    depends_on:
+      - zookeeper
+    volumes:
+      - C:/Temp/nifi/in:/opt/nifi/nifi-curent/folder/in
+      - C:/Temp/nifi/out:/opt/nifi/nifi-curent/folder/out
+
+  postgres:
+    image: postgres:9.6.23
+    restart: always
+    hostname: postgres
+    container_name: postgres
+    ports:
+      - 5432:5432
+    networks:
+      - stream-net
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: metabase
+      POSTGRES_DB: metabase
+      PGDATA: /var/lib/postgresql/data
+
+  metabase-app:
+    image: metabase/metabase:v0.40.3.1
+    restart: always
+    hostname: metabase
+    container_name: metabase
+    ports:
+      - 3000:3000
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: metabase
+      MB_DB_PORT: 5432
+      MB_DB_USER: metabase
+      MB_DB_PASS: postgres
+      MB_DB_HOST: postgres
+    networks:
+      - stream-net
+    depends_on:
+      - postgres
+    links:
+      - postgres
+      
+  minio:
+    image: minio/minio:latest
+    hostname: minio
+    container_name: minio
+    environment:
+      - MINIO_ROOT_USER=aulafia 
+      - MINIO_ROOT_PASSWORD=aulafia@123
+    volumes:
+      - ./minio:/data
+    networks:
+      - stream-net
+    ports:
+      - 9000:9000
+      - 9001:9001
+    command: server /data --console-address ":9001"
