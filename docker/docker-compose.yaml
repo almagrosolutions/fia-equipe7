@@ -36,8 +36,8 @@ services:
     depends_on:
       - zookeeper
     volumes:
-      - C:/Temp/nifi/in:/opt/nifi/nifi-curent/folder/in
-      - C:/Temp/nifi/out:/opt/nifi/nifi-curent/folder/out
+      - ./nifi/in:/opt/nifi/nifi-curent/folder/in
+      - ./nifi/out:/opt/nifi/nifi-curent/folder/out
 
   postgres:
     image: postgres:9.6.23
