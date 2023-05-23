@@ -36,8 +36,12 @@ services:
     depends_on:
       - zookeeper
     volumes:
-      - ./nifi/in:/opt/nifi/nifi-curent/folder/in
-      - ./nifi/out:/opt/nifi/nifi-curent/folder/out
+      - ./nifi/state:/opt/nifi/nifi-current/state
+      - ./nifi/db:/opt/nifi/nifi-current/database_repository
+      - ./nifi/flowfile:/opt/nifi/nifi-current/flowfile_repository
+      - ./nifi/content:/opt/nifi/nifi-current/content_repository
+      - ./nifi/provenance:/opt/nifi/nifi-current/provenance_repository
+      - ./nifi/logs:/opt/nifi/nifi-current/logs
 
   postgres:
     image: postgres:9.6.23
@@ -53,6 +57,8 @@ services:
       POSTGRES_USER: metabase
       POSTGRES_DB: metabase
       PGDATA: /var/lib/postgresql/data
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data
 
   metabase-app:
     image: metabase/metabase:v0.40.3.1
@@ -83,7 +89,11 @@ services:
       - MINIO_ROOT_USER=aulafia 
       - MINIO_ROOT_PASSWORD=aulafia@123
     volumes:
-      - ./minio:/data
+      - ./minio/data:/data
+      #- ./minio/land:/mnt/land
+      #- ./minio/raw:/mnt/raw
+      #- ./minio/context:/mnt/context
+      #- ./minio/trusted:/mnt/trusted
     networks:
       - stream-net
     ports:

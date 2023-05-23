@@ -1,3 +1,1 @@
-docker/minio/*
-
-docker/nifi/*
+/docker/postgres
