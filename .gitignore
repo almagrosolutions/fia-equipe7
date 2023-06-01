@@ -1,1 +1,8 @@
+/docker/hue
+/docker/minio
+/docker/mysql
+/docker/nifi
 /docker/postgres
+/data/credentials.json
+/data/link_web_teste.txt
+

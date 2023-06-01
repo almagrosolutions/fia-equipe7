@@ -1,1 +1,16 @@
 https://blog.min.io/minio-events-with-apache-nifi/
+
+accessKey: E0sKvAhzN4QUhOED
+secretKey: KOszAxGQslOqxSSULdJpcbLYOpaWOAIC
+
+Storage Account
+aulafiaead
+
+Container
+grupo7
+
+Key
+QDKbVST0U3yAaEI4HN9DFwYTB3jGO6xb4Kk5r59UFYOzXrkrVLESZKmrKzPZ/eEsDLV8Fw5XxybA+ASt4EZ2zA==
+
+Connection String
+DefaultEndpointsProtocol=https;AccountName=aulafiaead;AccountKey=QDKbVST0U3yAaEI4HN9DFwYTB3jGO6xb4Kk5r59UFYOzXrkrVLESZKmrKzPZ/eEsDLV8Fw5XxybA+ASt4EZ2zA==;EndpointSuffix=core.windows.net

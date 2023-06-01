@@ -100,3 +100,50 @@ services:
       - 9000:9000
       - 9001:9001
     command: server /data --console-address ":9001"
+
+  hive:
+    image: bde2020/hive
+    hostname: hive
+    container_name: hive
+    networks:
+      - stream-net
+    ports:
+      - 10000:10000
+
+  hue:
+    image: gethue/hue:latest
+    hostname: hue
+    container_name: hue
+    networks:
+      - stream-net
+    ports:
+      - 8888:8888
+    volumes:
+      - ./hue/hue.ini:/usr/share/hue/desktop/conf/hue.ini
+
+  mysql:
+    image: mysql:8.0.29
+    hostname: mysql
+    container_name: mysql
+    command: --lower_case_table_names=1
+    restart: always
+    environment:
+      TZ: America/Sao_Paulo
+      MYSQL_ROOT_PASSWORD: aulafia@123
+      MYSQL_USER: hive
+      MYSQL_PASSWORD: hive
+      MYSQL_DATABASE: hivedb
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_TCP_PORT: 3306
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 30
+    volumes:
+      - ./mysql:/var/lib/mysql
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    networks:
+      - stream-net
